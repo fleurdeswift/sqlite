@@ -299,7 +299,7 @@ public final class SQLStatement {
     }
 
     public func columnDouble(index: Int) -> Double {
-        return Double(sqlite3_column_int64(handle, Int32(index)));
+        return Double(sqlite3_column_double(handle, Int32(index)));
     }
     
     private var columnsNamesCache: [String]?;

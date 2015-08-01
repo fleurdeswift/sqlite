@@ -125,6 +125,25 @@ public final class SQLDatabase {
         }
     }
     
+    public func transactionAsync(queue: dispatch_queue_t, block: () throws -> Void, errorBlock: (error: ErrorType) -> Void) -> Void {
+        dispatch_barrier_async(queue) {
+            do {
+                try self.beginTransaction();
+                try block();
+                try self.commit();
+            }
+            catch {
+                do {
+                    try self.rollback();
+                }
+                catch {
+                }
+                
+                errorBlock(error: error);
+            }
+        }
+    }
+    
     public func transaction(queue: dispatch_queue_t, block: () throws -> Void) throws -> Void {
         try dispatch_barrier_sync(queue) {
             do {
