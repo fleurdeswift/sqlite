@@ -14,6 +14,7 @@
 		7B14B4551B6D1956007B8840 /* SQLStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4541B6D1956007B8840 /* SQLStatement.swift */; };
 		7B14B4571B6D19C6007B8840 /* SQLDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4561B6D19C6007B8840 /* SQLDatabase.swift */; };
 		7B14B45B1B6D2BF3007B8840 /* SQLStatement+Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B45A1B6D2BF3007B8840 /* SQLStatement+Bool.swift */; };
+		7B6F4CD01B6F394F00286C9A /* String+SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6F4CCF1B6F394F00286C9A /* String+SQL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		7B14B4541B6D1956007B8840 /* SQLStatement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLStatement.swift; sourceTree = "<group>"; };
 		7B14B4561B6D19C6007B8840 /* SQLDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLDatabase.swift; sourceTree = "<group>"; };
 		7B14B45A1B6D2BF3007B8840 /* SQLStatement+Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SQLStatement+Bool.swift"; sourceTree = "<group>"; };
+		7B6F4CCF1B6F394F00286C9A /* String+SQL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SQL.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,8 +52,9 @@
 				7B14B4561B6D19C6007B8840 /* SQLDatabase.swift */,
 				7B14B4541B6D1956007B8840 /* SQLStatement.swift */,
 				7B14B45A1B6D2BF3007B8840 /* SQLStatement+Bool.swift */,
-				7B14B3FF1B6C3FA3007B8840 /* Products */,
+				7B6F4CCF1B6F394F00286C9A /* String+SQL.swift */,
 				7B14B4611B6D7325007B8840 /* Dependancies */,
+				7B14B3FF1B6C3FA3007B8840 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B14B4551B6D1956007B8840 /* SQLStatement.swift in Sources */,
+				7B6F4CD01B6F394F00286C9A /* String+SQL.swift in Sources */,
 				7B14B40E1B6C4039007B8840 /* SQL.swift in Sources */,
 				7B14B45B1B6D2BF3007B8840 /* SQLStatement+Bool.swift in Sources */,
 				7B14B4571B6D19C6007B8840 /* SQLDatabase.swift in Sources */,
