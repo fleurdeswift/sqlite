@@ -216,7 +216,7 @@ public final class SQLStatement {
             return false;
         }
         
-        throw SQLReportError(errorCode);
+        throw SQLReportError(errorCode, handle: self.handle);
     }
     
     public func reset() throws -> Void {

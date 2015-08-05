@@ -9,20 +9,25 @@ import sqlite3
 import ExtraDataStructures
 
 public enum SQLError : ErrorType {
-    case GenericError(errorCode: Int32, errorDescription: String?)
+    case Constraint(description: String)
+    case Generic(code: Int32, description: String)
 }
 
 internal func SQLReportError(errorCode: Int32) -> SQLError {
     switch (errorCode) {
+    case SQLITE_CONSTRAINT:
+        return SQLError.Constraint(description: String.fromCString(sqlite3_errstr(errorCode))!);
     default:
-        return SQLError.GenericError(errorCode: errorCode, errorDescription: String.fromCString(sqlite3_errstr(errorCode)))
+        return SQLError.Generic(code: errorCode, description: String.fromCString(sqlite3_errstr(errorCode))!)
     }
 }
 
 internal func SQLReportError(errorCode: Int32, handle: COpaquePointer) -> SQLError {
     switch (errorCode) {
+    case SQLITE_CONSTRAINT:
+        return SQLError.Constraint(description: String.fromCString(sqlite3_errstr(errorCode))!);
     default:
-        return SQLError.GenericError(errorCode: errorCode, errorDescription: String.fromCString(sqlite3_errmsg(handle)))
+        return SQLError.Generic(code: errorCode, description: String.fromCString(sqlite3_errmsg(handle))!)
     }
 }
 
