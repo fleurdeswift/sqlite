@@ -15,6 +15,24 @@ public final class SQLDatabase {
         self.handle = handle;
     }
     
+    public convenience init(filename: String, flags: Int32, vfs: String?) throws {
+        var opaque = COpaquePointer();
+        var errorCode: Int32;
+
+        if let vfs = vfs {
+            errorCode = sqlite3_open_v2(filename, &opaque, flags, vfs);
+        }
+        else {
+            errorCode = sqlite3_open_v2(filename, &opaque, flags, nil);
+        }
+        
+        if errorCode != SQLITE_OK {
+            throw SQLReportError(errorCode);
+        }
+        
+        self.init(handle: opaque);
+    }
+    
     deinit {
         if self.handle != COpaquePointer() {
             sqlite3_close_v2(self.handle);

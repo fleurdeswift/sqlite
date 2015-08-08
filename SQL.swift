@@ -38,21 +38,3 @@ public let SQL_OPEN_NOMUTEX = SQLITE_OPEN_NOMUTEX;
 public let SQL_OPEN_FULLMUTEX = SQLITE_OPEN_FULLMUTEX;
 public let SQL_OPEN_PRIVATECACHE = SQLITE_OPEN_PRIVATECACHE;
 public let SQL_OPEN_URI = SQLITE_OPEN_URI;
-
-public func SQLOpen(filename: String, flags: Int32, vfs: String?) throws -> SQLDatabase {
-    var opaque = COpaquePointer();
-    var errorCode: Int32;
-
-    if let vfs = vfs {
-        errorCode = sqlite3_open_v2(filename, &opaque, flags, vfs);
-    }
-    else {
-        errorCode = sqlite3_open_v2(filename, &opaque, flags, nil);
-    }
-    
-    if errorCode != SQLITE_OK {
-        throw SQLReportError(errorCode);
-    }
-    
-    return SQLDatabase(handle: opaque);
-}
