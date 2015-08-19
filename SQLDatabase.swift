@@ -49,9 +49,9 @@ public final class SQLDatabase {
         
         return SQLStatement(database: self, handle: statement);
     }
-    
+
     public func exec(sql: String, @noescape callback: (data: [String: String]) -> Bool) throws -> Void {
-        let statement   = try prepare(sql);
+        let statement   = try self.prepare(sql);
         var first       = true;
         var columns     = [String]();
         var columnCount = 0;
@@ -79,8 +79,8 @@ public final class SQLDatabase {
         }
     }
 
-    public func exec(sql: String, @noescape callback: (data: [String: AnyObject]) -> Bool) throws -> Void {
-        let statement   = try prepare(sql);
+    public func exec(sql: String, callback: (data: [String: AnyObject]) -> Bool) throws -> Void {
+        let statement   = try self.prepare(sql);
         var first       = true;
         var columns     = [String]();
         var columnCount = 0;
@@ -109,10 +109,10 @@ public final class SQLDatabase {
     }
 
     public func exec(sql: String) throws -> Void {
-        let statement = try prepare(sql);
+        let statement = try self.prepare(sql);
         try statement.step();
     }
-    
+
     public func beginTransaction() throws -> Void {
         try exec("BEGIN TRANSACTION;");
     }
@@ -124,103 +124,7 @@ public final class SQLDatabase {
     public func rollback() throws -> Void {
         try exec("ROLLBACK TRANSACTION;");
     }
-    
-    public func exec(queue: dispatch_queue_t, sql: String, block: (statement: SQLStatement) throws -> Void) throws -> Void {
-        try dispatch_sync(queue) {
-            try block(statement: try self.prepare(sql));
-        }
-    }
-    
-    public func exec<T>(queue: dispatch_queue_t, sql: String, block: (statement: SQLStatement) throws -> T) throws -> T {
-        return try dispatch_sync(queue) {
-            return try block(statement: try self.prepare(sql));
-        }
-    }
 
-    public func exec<T>(queue: dispatch_queue_t, sql: String, block: (statement: SQLStatement) throws -> T?) throws -> T? {
-        return try dispatch_sync(queue) {
-            return try block(statement: try self.prepare(sql));
-        }
-    }
-    
-    public func transactionAsync(queue: dispatch_queue_t, block: () throws -> Void, errorBlock: (error: ErrorType) -> Void) -> Void {
-        dispatch_barrier_async(queue) {
-            do {
-                try self.beginTransaction();
-                try block();
-                try self.commit();
-            }
-            catch {
-                do {
-                    try self.rollback();
-                }
-                catch {
-                }
-                
-                errorBlock(error: error);
-            }
-        }
-    }
-    
-    public func transaction(queue: dispatch_queue_t, block: () throws -> Void) throws -> Void {
-        try dispatch_barrier_sync(queue) {
-            do {
-                try self.beginTransaction();
-                try block();
-                try self.commit();
-            }
-            catch {
-                do {
-                    try self.rollback();
-                }
-                catch {
-                }
-                
-                throw error;
-            }
-        }
-    }
-
-    public func transaction<T>(queue: dispatch_queue_t, block: () throws -> T) throws -> T {
-        return try dispatch_barrier_sync(queue) {
-            do {
-                try self.beginTransaction();
-                let result = try block();
-                try self.commit();
-                return result;
-            }
-            catch {
-                do {
-                    try self.rollback();
-                }
-                catch {
-                }
-                
-                throw error;
-            }
-        }
-    }
-
-    public func transaction<T>(queue: dispatch_queue_t, block: () throws -> T?) throws -> T? {
-        return try dispatch_barrier_sync(queue) {
-            do {
-                try self.beginTransaction();
-                let result = try block();
-                try self.commit();
-                return result;
-            }
-            catch {
-                do {
-                    try self.rollback();
-                }
-                catch {
-                }
-                
-                throw error;
-            }
-        }
-    }
-    
     public var changes: Int {
         get {
             return Int(sqlite3_changes(handle));
