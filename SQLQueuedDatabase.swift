@@ -110,6 +110,23 @@ public class SQLQueuedDatabase {
         }
     }
 
+    public func writeAsync(block: (SQLWrite) -> Void) -> Void {
+        dispatch_barrier_async(queue) {
+            do {
+                try self.database.beginTransaction();
+                block(SQLWrite(self.database));
+                try self.database.commit();
+            }
+            catch {
+                do {
+                    try self.database.rollback();
+                }
+                catch {
+                }
+            }
+        }
+    }
+
     public func writeAsync(block: (SQLWrite) throws -> Void, errorBlock: (ErrorType) -> Void) -> Void {
         dispatch_barrier_async(queue) {
             do {
